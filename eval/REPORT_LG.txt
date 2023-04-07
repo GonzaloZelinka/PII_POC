@@ -1,10 +1,18 @@
-              precision    recall  f1-score   support
+General Precision: 0.9257183691891079
+General Recall: 0.7098435333729451
+General F1: 0.7952956840119827
+                 precision    recall  f1-score   support
 
-       ERSON       0.88      0.93      0.90      1700
- HONE_NUMBER       0.81      0.45      0.58      1254
-MAIL_ADDRESS       0.98      1.00      0.99      1483
-     OCATION       0.31      0.12      0.17      3434
+       PERSON       0.96      0.95      0.95      3504
+ PHONE_NUMBER       0.61      0.47      0.53       509
+EMAIL_ADDRESS       0.95      1.00      0.98      1284
+     LOCATION       0.39      0.11      0.17      2114
+  CREDIT_CARD       0.98      0.81      0.89      1367
+       US_SSN       0.98      0.74      0.84      1320
 
-   micro avg       0.75      0.51      0.61      7871
-   macro avg       0.74      0.62      0.66      7871
-weighted avg       0.64      0.51      0.55      7871
+    micro avg       0.90      0.71      0.80     10098
+    macro avg       0.81      0.68      0.73     10098
+ weighted avg       0.83      0.71      0.75     10098
+
+DURATION: 40 seg
+DATA: testing-data/product_reviews9.csv -> 2000 reviews.

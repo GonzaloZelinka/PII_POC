@@ -1,0 +1,15 @@
+General Precision: 1.0
+General Recall: 1.0
+General F1: 1.0
+              precision    recall  f1-score   support
+
+       ERSON       1.00      1.00      1.00      2000
+ HONE_NUMBER       1.00      1.00      1.00      1035
+MAIL_ADDRESS       1.00      1.00      1.00      1002
+     OCATION       1.00      1.00      1.00       978
+  REDIT_CARD       1.00      1.00      1.00      1367
+       S_SSN       1.00      1.00      1.00      1320
+
+   micro avg       1.00      1.00      1.00      7702
+   macro avg       1.00      1.00      1.00      7702
+weighted avg       1.00      1.00      1.00      7702

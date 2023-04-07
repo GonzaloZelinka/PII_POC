@@ -1,10 +1,18 @@
-                precision    recall  f1-score   support
+General Precision: 0.9469810942279725
+General Recall: 0.7599524658348188
+General F1: 0.7992084982295355
+                 precision    recall  f1-score   support
 
-       PERSON       0.80      0.90      0.85      1700
- PHONE_NUMBER       0.95      0.71      0.81      1254
-EMAIL_ADDRESS       0.98      0.96      0.97      1483
-     LOCATION       0.33      0.29      0.31      3434
+       PERSON       0.92      0.94      0.93      3504
+ PHONE_NUMBER       0.77      0.98      0.86       509
+EMAIL_ADDRESS       0.96      0.99      0.97      1284
+     LOCATION       0.38      0.28      0.32      2114
+  CREDIT_CARD       1.00      0.81      0.89      1367
+       US_SSN       1.00      0.70      0.82      1320
 
-    micro avg       0.67      0.61      0.64      7871
-    macro avg       0.77      0.71      0.74      7871
- weighted avg       0.66      0.61      0.63      7871
+    micro avg       0.84      0.76      0.80     10098
+    macro avg       0.84      0.78      0.80     10098
+ weighted avg       0.83      0.76      0.79     10098
+
+DURATION: 334 seg
+DATA: testing-data/product_reviews9.csv -> 2000 reviews.

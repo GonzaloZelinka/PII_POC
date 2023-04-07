@@ -156,7 +156,6 @@ class TransformersRecognizer(EntityRecognizer):
             entity = self.model_to_presidio_mapping.get(res["entity_group"], None)
             if not entity:
                 continue
-
             res["entity_group"] = self.__check_label_transformer(res["entity_group"])
             textual_explanation = self.default_explanation.format(res["entity_group"])
             explanation = self.build_transformers_explanation(
@@ -292,7 +291,6 @@ class TransformersRecognizer(EntityRecognizer):
         and is supported by Presidio entities
         :rtype: str
         """
-
         if label == "O":
             return label
 
@@ -304,6 +302,7 @@ class TransformersRecognizer(EntityRecognizer):
             return "O"
 
         if entity not in self.supported_entities:
-            logger.warning(f"Found entity {entity} which is not supported by Presidio")
+            if entity != "O":
+                logger.warning(f"Found entity {entity} which is not supported by Presidio")
             return "O"
         return entity
