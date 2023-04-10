@@ -22,5 +22,5 @@ Run the `presidio.ipynb` notebook.
 ## For more context:
 
 - See the [Presidio documentation](https://microsoft.github.io/presidio/).
-- See the [Explanation Document]()
+- See the [Explanation Document](https://docs.google.com/document/d/1QFF-VG1q9iyZAukwo-GnYcXIz_BW7Rl62G3rMbWru2U/edit?usp=sharing)
 - See in HuggingFace the [Model used with Presidio (obi/deid_roberta_i2b2)](https://huggingface.co/obi/deid_roberta_i2b2)
