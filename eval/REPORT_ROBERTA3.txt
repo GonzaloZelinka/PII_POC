@@ -1,0 +1,15 @@
+
+General Precision: 0.7933333333333333
+General Recall: 0.7600000000000001
+General F1: 0.7666666666666666
+Entity           Precision    Recall    F1
+-------------  -----------  --------  ----
+LOCATION              0.13      0.24  0.17
+EMAIL_ADDRESS         1         1     1
+CREDIT_CARD           1         0.82  0.9
+US_SSN                1         0.72  0.84
+PHONE_NUMBER          0.79      0.8   0.79
+PERSON                0.84      0.98  0.9
+
+DURATION: 334 seg 
+DATA: testing-data/product_review9.csv -> 2000 reviews.
