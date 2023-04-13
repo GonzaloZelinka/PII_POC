@@ -1,5 +1,6 @@
 import json
 
+
 def fix_entities_to_eval(input_path, output_path):
     # Read the input JSON file
     with open(input_path, "r", encoding="ISO-8859-1") as f:

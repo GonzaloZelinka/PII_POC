@@ -1,7 +1,9 @@
-from presidio_anonymizer import AnonymizerEngine
-from presidio_analyzer import RecognizerResult
 from typing import List
+
+from presidio_analyzer import RecognizerResult
+from presidio_anonymizer import AnonymizerEngine
 from presidio_anonymizer.entities import OperatorConfig
+
 
 class Anonymizer:
   def anonymize(self, text: str, analyze_results: List[RecognizerResult]):

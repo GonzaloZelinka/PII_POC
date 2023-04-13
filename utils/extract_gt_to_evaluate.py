@@ -1,7 +1,9 @@
-from typing import List
-import re
-import pandas as pd
 import json
+import re
+from typing import List
+
+import pandas as pd
+
 
 def get_span_indx(
     labels: List[str],

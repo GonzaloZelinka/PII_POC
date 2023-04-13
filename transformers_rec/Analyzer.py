@@ -1,7 +1,10 @@
 from presidio_analyzer import AnalyzerEngine, RecognizerRegistry
 from presidio_analyzer.nlp_engine import NlpEngineProvider
-from .transformers_recognizer import TransformersRecognizer
+
 from .configuration import BERT_DEID_CONFIGURATION
+from .transformers_recognizer import TransformersRecognizer
+
+
 class Analyzer:
 
   def __init__(self, model_path):

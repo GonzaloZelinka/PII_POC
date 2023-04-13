@@ -4,6 +4,4 @@ class Config:
   threshold = 0.5
   check_overlaps = True
   columns = ["SITE_URL", "PVID", "REVIEW"]
-  num_workers = 5
-  # Define the chunk size and number of processes
-  CHUNK_SIZE = 100
+  BATCH_SIZE = 2000
