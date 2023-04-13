@@ -1,9 +1,7 @@
 from presidio_analyzer import AnalyzerEngine, RecognizerResult, RecognizerRegistry, BatchAnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine
 from presidio_analyzer.nlp_engine import NlpEngineProvider
-from presidio_analyzer.nlp_engine import NlpArtifacts
 from presidio_anonymizer.entities import OperatorConfig
-import pandas as pd
 from transformers_rec import (
     TransformersRecognizer,
     BERT_DEID_CONFIGURATION,

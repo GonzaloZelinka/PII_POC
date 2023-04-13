@@ -32,5 +32,5 @@ def process_review2(value):
             result.append({"start": res.start, "end": res.end, "entity": res.entity_type, "text": res.text})
     else:
         result = create_obj(result, review)
-    final_result.append({"SITE_URL": value[0],"PVID": value[1], "TEXT": review, "ENTITIES": result})
+    final_result.append({"TEXT": review, "ENTITIES": result})
     return final_result
