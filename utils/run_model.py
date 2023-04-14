@@ -3,7 +3,7 @@ import csv
 import json
 import os
 import sys
-
+import warnings
 import pandas as pd
 from tqdm import tqdm
 
@@ -25,7 +25,7 @@ def create_obj(an_r, text):
     return ents
 
 
-def model_results(input_path, output_path, batch_size=2000, columns=["SITE_URL","ITEM_GROUP_ID","PVID","REVIEW"], threshold=0.5, check_overlaps=True, entities=["PERSON", "LOCATION", "PHONE_NUMBER", "EMAIL_ADDRESS","CREDIT_CARD", "US_SSN"]):
+def model_results(input_path, output_path, batch_size=2000, columns=["SITE_URL","ITEM_GROUP_ID","PVIDS","REVIEW"], threshold={'PERSON': 0.9, 'CREDIT_CARD': 0.5, 'US_SSN': 0.5, 'EMAIL_ADDRESS': 0.5, 'PHONE_NUMBER': 0.4, 'LOCATION': 0.7}, check_overlaps=True, entities=["PERSON", "LOCATION", "PHONE_NUMBER", "EMAIL_ADDRESS","CREDIT_CARD", "US_SSN"]):
     """
     Runs a Presidio model with n_calls, reading input data from a CSV file and writing output data to another CSV file.
 
@@ -60,14 +60,14 @@ def model_results(input_path, output_path, batch_size=2000, columns=["SITE_URL",
     with open(output_path, "a", encoding="ISO-8859-1") as fp:
       writer = csv.writer(fp)
        # Write the header row
-      writer.writerow(['SITE_URL', 'ITEM_GROUP_ID', 'PVID', 'TEXT', 'ENTITIES'])
+      writer.writerow(['SITE_URL', 'ITEM_GROUP_ID', 'PVIDS', 'TEXT', 'ENTITIES'])
       anonymizer = Anonymizer()
 
       for batch in pd.read_csv(input_path, encoding="ISO-8859-1", chunksize=batch_size, names=columns, header=0):
          for row in batch.iterrows():
           site_url = row[1]['SITE_URL']
           item_group_id = row[1]['ITEM_GROUP_ID']
-          pvids = row[1]['PVID']
+          pvids = row[1]['PVIDS']
           review = row[1]['REVIEW']
 
           results = analyzer.analyze(
@@ -85,3 +85,8 @@ def model_results(input_path, output_path, batch_size=2000, columns=["SITE_URL",
           writer.writerow(row)
           progress_bar.update(1)
     print("\nDone!") 
+
+
+# because we use n-calls, the warning is annoying as it repeats itself all the time
+warnings.filterwarnings("ignore", message="You seem to be using the pipelines sequentially on GPU.")
+model_results(input_path="testing-data/output_test_data_pii_filtered_cleaned.csv", output_path="testing-data/output_from_db4.csv")

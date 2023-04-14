@@ -23,6 +23,18 @@ Inside your .venv:
 
 In order to use the score_threshold different for each entity, you need to add changes in:
 
+- `line 3`:
+
+  ```python
+  from typing import List, Optional
+  ```
+
+  to
+
+  ```python
+  from typing import List, Optional, Union, Dict
+  ```
+
 - `line 131`:
 
   ```python
