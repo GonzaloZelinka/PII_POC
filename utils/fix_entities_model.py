@@ -2,6 +2,14 @@ import json
 
 
 def fix_entities_to_eval(input_path, output_path):
+    """
+    Fixes entities in the JSON file to evaluate the model, merging consecutive entities which should be considered as one entity as one, removing entities with "O" entity value.
+    Arguments:
+    input_path -- str: the path to the input JSON file.
+    output_path -- str: the path to the output JSON file.
+
+    Returns:
+    None"""
     # Read the input JSON file
     with open(input_path, "r", encoding="ISO-8859-1") as f:
         json_data = f.read()
@@ -16,7 +24,6 @@ def fix_entities_to_eval(input_path, output_path):
         entities_clean = []
         i = 0 
         # Loop over each entity in the current item
-        # print("js[ENTITIES]: ", js["ENTITIES"])
         while i < len(js["ENTITIES"]):
             j = i + 1
             new_entity = js["ENTITIES"][i]
@@ -27,15 +34,12 @@ def fix_entities_to_eval(input_path, output_path):
                     # If the next entity is not the same type or is not adjacent, stop combining entities
                     break
                 new_entity["end"] = int(js["ENTITIES"][j]["end"])
-                # print("new_entity end: ", new_entity["end"])
                 new_entity["text"] = new_entity["text"] + " " + js["ENTITIES"][j]["text"]
-                # print("new_entity text: ", new_entity["text"])
                 j += 1
 
             entities_clean.append(new_entity)
             i = j
         # Update the current item with the cleaned entities
-        # print("entities_clean final: ", entities_clean)
         js["ENTITIES"] = entities_clean
     # Write the updated JSON data to the output file
     with open(output_path, 'w', encoding="ISO-8859-1") as fp:

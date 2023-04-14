@@ -1,18 +1,14 @@
 
 import csv
 import json
-from typing import Iterator, Tuple
-
-import pandas as pd
-from presidio_analyzer.nlp_engine import NlpArtifacts
-from tqdm import tqdm
-
-from Config import Config
 import os
 import sys
-import warnings
+
+import pandas as pd
+from tqdm import tqdm
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from transformers_rec import (Analyzer, Anonymizer)
+from transformers_rec import Analyzer, Anonymizer
 
 
 def create_obj(an_r, text):
@@ -29,7 +25,32 @@ def create_obj(an_r, text):
     return ents
 
 
-def model_results(input_path, output_path):
+def model_results(input_path, output_path, batch_size=2000, columns=["SITE_URL","ITEM_GROUP_ID","PVID","REVIEW"], threshold=0.5, check_overlaps=True, entities=["PERSON", "LOCATION", "PHONE_NUMBER", "EMAIL_ADDRESS","CREDIT_CARD", "US_SSN"]):
+    """
+    Runs a Presidio model with n_calls, reading input data from a CSV file and writing output data to another CSV file.
+
+    Arguments:
+    input_path -- str: the path to the input CSV file, which should have the following columns:
+        - SITE_URL: str
+        - ITEM_GROUP_ID: int or str
+        - PVIDS: list of str, the list should be inside a str - 
+            Example: "[
+              ""test.com!1"",
+              ""test.com!2"",
+              ""test.com!3"",
+              ""test.com!4"",
+              ""test.com!5""
+            ]"
+        - REVIEW: str
+    output_path -- str: the path to the output CSV file.
+    batch_size -- int: the number of rows to read from the input CSV file at a time.
+    columns -- list of str: the names of the columns in the input CSV file.
+    threshold -- float: the minimum score for an entity to be returned.
+    check_overlaps -- bool: if True, the model will not recognize overlapping entities. If False, the model will recognize overlapping entities and return all of entities and the precision/score for each entity.
+    entities -- list of str: the entities to recognize.
+    Returns:
+    None
+    """
     analyzer = Analyzer("obi/deid_roberta_i2b2") # "en_core_web_lg" or "obi/deid_roberta_i2b2"
 
     # get the total number of rows in the CSV file
@@ -42,7 +63,7 @@ def model_results(input_path, output_path):
       writer.writerow(['SITE_URL', 'ITEM_GROUP_ID', 'PVID', 'TEXT', 'ENTITIES'])
       anonymizer = Anonymizer()
 
-      for batch in pd.read_csv(input_path, encoding="ISO-8859-1", chunksize=Config.BATCH_SIZE, names=Config.columns, header=0):
+      for batch in pd.read_csv(input_path, encoding="ISO-8859-1", chunksize=batch_size, names=columns, header=0):
          for row in batch.iterrows():
           site_url = row[1]['SITE_URL']
           item_group_id = row[1]['ITEM_GROUP_ID']
@@ -50,10 +71,10 @@ def model_results(input_path, output_path):
           review = row[1]['REVIEW']
 
           results = analyzer.analyze(
-            text=str(review), language="en", entities=Config.entities, score_threshold=Config.threshold
+            text=str(review), language="en", entities=entities, score_threshold=threshold
           )
           result = []
-          if Config.check_overlaps:
+          if check_overlaps:
                 text_anon = anonymizer.anonymize(str(review), results)
                 text_anon = sorted(text_anon.items, key=lambda x: x.start)
                 for res in text_anon:
@@ -64,6 +85,3 @@ def model_results(input_path, output_path):
           writer.writerow(row)
           progress_bar.update(1)
     print("\nDone!") 
-
-warnings.filterwarnings("ignore", message="You seem to be using the pipelines sequentially on GPU.")
-model_results(input_path="testing-data/cleaned_sentences_from_db2.csv", output_path="testing-data/output_from_db2.csv")
