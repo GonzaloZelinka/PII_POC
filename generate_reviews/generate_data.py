@@ -912,7 +912,7 @@ def generate_reviews(output_file, num_reviews=1000):
         print("Done!")
 
 
-generate_reviews("train/train.csv", 30000)
+generate_reviews("train/test.csv", 8000)
 
 ner_tags = {
     "O": 0,

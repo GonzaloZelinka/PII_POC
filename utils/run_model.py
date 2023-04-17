@@ -121,7 +121,7 @@ def model_results(
 
 
 # because we use n-calls, the warning is annoying as it repeats itself all the time
-analyze_batch = Analyzer("obi/deid_roberta_i2b2", type="batch")
+analyze_batch = Analyzer("bert-base-cased", type="batch")
 warnings.filterwarnings(
     "ignore", message="You seem to be using the pipelines sequentially on GPU."
 )
