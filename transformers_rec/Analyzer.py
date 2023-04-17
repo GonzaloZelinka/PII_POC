@@ -3,15 +3,16 @@ from presidio_analyzer.nlp_engine import NlpEngineProvider
 
 from .configuration import BERT_DEID_CONFIGURATION
 from .transformers_recognizer import TransformersRecognizer
-
+from .BatchAnalyzer import BatchAnalyzer
 
 class Analyzer:
 
-  def __init__(self, model_path):
-    """Return AnalyzerEngine.
+  def __init__(self, model_path, type):
+    """Return AnalyzerEngine or BatchAnalyzerEngine.
       :param model_path: Which model to use for NER:
           "obi/deid_roberta_i2b2",
           "en_core_web_lg"
+      :param type: "batch" or "simple".
       """
     self._analyzer = None
     self._engine = None
@@ -39,14 +40,30 @@ class Analyzer:
     nlp_engine = NlpEngineProvider(nlp_configuration=nlp_configuration).create_engine()
 
     analyzer = AnalyzerEngine(nlp_engine=nlp_engine, registry=registry)
-    self._engine = analyzer
+    if type == "batch": 
+      self._engine = BatchAnalyzer(analyzer_engine=analyzer)
+    else:
+      self._engine = analyzer
 
   def get_engine(self):
     """Return AnalyzerEngine."""
     return self._engine
     
   def analyze(self, **kwargs):
-    """Analyze input using Analyzer engine and input arguments (kwargs)."""
+    """Analyze input using Analyzer engine and input arguments (kwargs).
+    :param input_dict: The input dictionary for analysis in batch mode, executed with analyze_dict method of BatchAnalyzer
+    :param keys_to_skip: Keys to ignore during analysis in batch mode with input_dict argument.
+    :param texts: The list of texts for analysis in batch mode, executed with analyze_iterator method of BatchAnalyzer
+    :param text: The text for analysis in simple mode, executed with analyze method of AnalyzerEngine
+
+    :param language: Input language"""
     if "entities" not in kwargs or "All" in kwargs["entities"]:
         kwargs["entities"] = None
-    return self._engine.analyze(**kwargs)
+    if isinstance(self._engine, BatchAnalyzer) and "input_dict" in kwargs:
+      return self._engine.analyze_dict(**kwargs)
+    elif isinstance(self._engine, BatchAnalyzer) and "texts" in kwargs:
+      return self._engine.analyze_iterator(**kwargs)
+    elif isinstance(self._engine, AnalyzerEngine) and "text" in kwargs:
+      return self._engine.analyze(**kwargs)
+    else:
+      raise ValueError("Invalid input arguments.")
