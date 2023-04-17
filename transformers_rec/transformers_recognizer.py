@@ -3,8 +3,7 @@ import logging
 from typing import List, Optional
 
 import torch
-from presidio_analyzer import (AnalysisExplanation, EntityRecognizer,
-                               RecognizerResult)
+from presidio_analyzer import AnalysisExplanation, EntityRecognizer, RecognizerResult
 from presidio_analyzer.nlp_engine import NlpArtifacts
 
 from .configuration import BERT_DEID_CONFIGURATION
@@ -12,8 +11,12 @@ from .configuration import BERT_DEID_CONFIGURATION
 logger = logging.getLogger("presidio-analyzer")
 
 try:
-    from transformers import (AutoModelForTokenClassification, AutoTokenizer,
-                              TokenClassificationPipeline, pipeline)
+    from transformers import (
+        AutoModelForTokenClassification,
+        AutoTokenizer,
+        TokenClassificationPipeline,
+        pipeline,
+    )
 
 except ImportError:
     logger.error("transformers_rec is not installed")
@@ -60,9 +63,7 @@ class TransformersRecognizer(EntityRecognizer):
         supported_entities: Optional[List[str]] = None,
     ):
         if not supported_entities:
-            supported_entities = BERT_DEID_CONFIGURATION[
-                "PRESIDIO_SUPPORTED_ENTITIES"
-            ]
+            supported_entities = BERT_DEID_CONFIGURATION["PRESIDIO_SUPPORTED_ENTITIES"]
         super().__init__(
             supported_entities=supported_entities,
             name=f"Transformers model {model_path}",
@@ -303,6 +304,8 @@ class TransformersRecognizer(EntityRecognizer):
 
         if entity not in self.supported_entities:
             if entity != "O":
-                logger.warning(f"Found entity {entity} which is not supported by Presidio")
+                logger.warning(
+                    f"Found entity {entity} which is not supported by Presidio"
+                )
             return "O"
         return entity
