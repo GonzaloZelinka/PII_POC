@@ -2,7 +2,7 @@ from presidio_analyzer import AnalyzerEngine, RecognizerRegistry
 from .custom_analyzer_engine import CustomAnalyzerEngine
 from presidio_analyzer.nlp_engine import NlpEngineProvider
 
-from .configuration import BERT_DEID_CONFIGURATION
+from .configuration import BERT_DEID_CONFIGURATION, BERT_PII_CONFIGURATION
 from .transformers_recognizer import TransformersRecognizer
 from .BatchAnalyzer import BatchAnalyzer
 
@@ -30,6 +30,8 @@ class Analyzer:
             transformers_recognizer = TransformersRecognizer(model_path=model_path)
             if model_path == "obi/deid_roberta_i2b2":
                 transformers_recognizer.load_transformer(**BERT_DEID_CONFIGURATION)
+            elif model_path == "gonzazelinka/custom-bert-model-PII":
+                transformers_recognizer.load_transformer(**BERT_PII_CONFIGURATION)
             # Use small spaCy model, no need for both spacy and HF models
             # The transformers model is used here as a recognizer, not as an NlpEngine
             nlp_configuration = {

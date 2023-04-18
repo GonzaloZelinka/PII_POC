@@ -56,16 +56,16 @@ BERT_DEID_CONFIGURATION = {
 }
 
 
-BERT_CUSTOM_CONFIGURATION = {
+BERT_PII_CONFIGURATION = {
     "PRESIDIO_SUPPORTED_ENTITIES": [
         "LOCATION",
         "PERSON",
         "PHONE_NUMBER",
         "EMAIL",
     ],
-    "DEFAULT_MODEL_PATH": "bert-base-cased",
+    "DEFAULT_MODEL_PATH": "gonzazelinka/custom-bert-model-PII",
     "LABELS_TO_IGNORE": ["O"],
-    "DEFAULT_EXPLANATION": "Identified as {} by the custom-bert NER model",
+    "DEFAULT_EXPLANATION": "Identified as {} by the gonzazelinka/custom-bert-model-PII NER model",
     "SUB_WORD_AGGREGATION": "simple",
     "DATASET_TO_PRESIDIO_MAPPING": {
         "DATE": "DATE_TIME",

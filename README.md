@@ -1,12 +1,12 @@
-## Installation
+# Installation
 
-### Create a .venv
+## Create a .venv
 
 ```bash
 python3 -m virtualenv -p Python39 .venv
 ```
 
-### Activate the .venv
+## Activate the .venv
 
 ```bash
 #For Windows
@@ -15,77 +15,32 @@ source .venv/Scripts/activate
 source .venv/bin/activate
 ```
 
-## Important!
+# Install dependencies
 
-Inside your .venv:
+```bash
+pip install -r requirements.txt
+```
 
-- `<venv-name>/lib/<python-path>/site-packages/presidio_analyzer/analyzer_engine.py`
+# Using
 
-In order to use the score_threshold different for each entity, you need to add changes in:
+You have some examples in the `presidio.ipynb` notebook.
 
-- `line 3`:
+## Run model with csv data
 
-  ```python
-  from typing import List, Optional
-  ```
+- It is necessary to run the `utils/run_model.py` script in the presidio notebook or in the terminal, for this function, the model must always be run in `batch mode` (below is only an optimized n-call method).
+- At the moment, the available models are `obi/deid_roberta_i2b2` from HuggingFace and a `custom-bert-model`.
+- Initially (but you could change the function to accept another type of csv), The input csv file should have the following order:
 
-  to
+```csv
+"["id1", "id2"]","This product is awesome!"
+"["id3", "id4"]","This product is bad..."
+```
 
-  ```python
-  from typing import List, Optional, Union, Dict
-  ```
+The first column is a list representing the IDs (e.g. PVIDs) associated with the review (second column).
 
-- `line 131`:
+- For improved performance, you can run the model with a [CUDA](https://developer.nvidia.com/cuda-toolkit-archive) device.
 
-  ```python
-  score_threshold: Optional[float] = None,
-  ```
-
-  to
-
-  ```python
-  score_threshold: Optional[Union[float, Dict[str, float]] ] = None,
-  ```
-
-- `line 296`:
-
-  ```python
-  def __remove_low_scores(self, results: List[RecognizerResult], score_threshold: float = None) -> List[RecognizerResult]:
-  ```
-
-  to
-
-  ```python
-  def __remove_low_scores(
-          self, results: List[RecognizerResult], score_threshold: Union[float, Dict[str, float]] = None
-      ) -> List[RecognizerResult]:
-  ```
-
-- `line 309`:
-
-  ```python
-    new_results = [result for result in results if result.score >= score_threshold]
-    return new_results
-  ```
-
-  to
-
-  ```python
-  if isinstance(score_threshold, dict):
-            new_results: List[RecognizerResult] = []
-            for result in results:
-                if result.entity_type in score_threshold and result.score >= score_threshold[result.entity_type]:
-                    new_results.append(result)
-        elif isinstance(score_threshold, float):
-            new_results = [result for result in results if result.score >= score_threshold]
-        return new_results
-  ```
-
-## Using
-
-Run the `presidio.ipynb` notebook.
-
-## For more context:
+# For more context:
 
 - See the [Presidio documentation](https://microsoft.github.io/presidio/).
 - See the [Explanation Document](https://docs.google.com/document/d/1QFF-VG1q9iyZAukwo-GnYcXIz_BW7Rl62G3rMbWru2U/edit?usp=sharing)
