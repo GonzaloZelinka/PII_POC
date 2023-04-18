@@ -4,6 +4,7 @@ from typing import Dict
 def fix_entities(data: Dict):
     """
     Fixes entities in the JSON file to evaluate the model, merging consecutive entities which should be considered as one entity as one, removing entities with "O" entity value.
+    For example, if the model found the entity "686 E Broadway" as "6", "86 E" and "Broadway", this function will merge them into one entity "686 E Broadway".
     Arguments:
     :param data: -- Dict: The REVIEW element must have the following format:
         - REVIEW: str. Represent a review. Whit this format:

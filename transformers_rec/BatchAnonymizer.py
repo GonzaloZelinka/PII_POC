@@ -22,7 +22,7 @@ class BatchAnonymizer(AnonymizerEngine):
 
         :param texts: List containing the texts to be anonymized (original texts)
         :param recognizer_results_list: A list of lists of RecognizerResult,
-        the output of the AnalyzerEngine on each text in the list.
+        the output of the CustomAnalyzerEngine on each text in the list.
         :param kwargs: Additional kwargs for the `AnonymizerEngine.anonymize` method
         """
         return_list = []
@@ -55,7 +55,7 @@ class BatchAnonymizer(AnonymizerEngine):
         Anonymize values in a dictionary.
 
         :param analyzer_results: Iterator of `DictAnalyzerResult`
-        containing the output of the AnalyzerEngine.analyze_dict on the input text.
+        containing the output of the CustomAnalyzerEngine.analyze_dict on the input text.
         :param kwargs: Additional kwargs for the `AnonymizerEngine.anonymize` method
         """
 

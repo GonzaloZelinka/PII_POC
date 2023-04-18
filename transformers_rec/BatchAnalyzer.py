@@ -1,6 +1,7 @@
 from typing import List, Iterable, Dict, Type, Union, Any, Optional, Iterator, Tuple
 
 from presidio_analyzer import DictAnalyzerResult, RecognizerResult, AnalyzerEngine
+from .custom_analyzer_engine import CustomAnalyzerEngine
 from presidio_analyzer.nlp_engine import NlpArtifacts
 from tqdm import tqdm
 
@@ -12,20 +13,20 @@ class BatchAnalyzer:
     Wrapper class to run Presidio Analyzer Engine on multiple values,
     either lists/iterators of strings, or dictionaries.
 
-    :param: analyzer_engine: AnalyzerEngine instance to use
+    :param: analyzer_engine: CustomAnalyzerEngine instance to use
     for handling the values in those collections.
     """
 
-    def __init__(self, analyzer_engine: Optional[AnalyzerEngine] = None):
+    def __init__(self, analyzer_engine: Optional[CustomAnalyzerEngine] = None):
         self.analyzer_engine = analyzer_engine
         if not analyzer_engine:
-            self.analyzer_engine = AnalyzerEngine()
+            self.analyzer_engine = CustomAnalyzerEngine()
 
     def analyze_iterator(
         self,
         texts: Iterable[Union[str, bool, float, int]],
         language: str,
-        progress_bar,
+        progress_bar: Optional[Type[tqdm]] = None,
         **kwargs,
     ) -> List[List[RecognizerResult]]:
         """
@@ -33,7 +34,7 @@ class BatchAnalyzer:
 
         :param texts: An list containing strings to be analyzed.
         :param language: Input language
-        :param kwargs: Additional parameters for the `AnalyzerEngine.analyze` method.
+        :param kwargs: Additional parameters for the `CustomAnalyzerEngine.analyze` method.
         """
 
         # validate types
@@ -51,7 +52,8 @@ class BatchAnalyzer:
             results = self.analyzer_engine.analyze(
                 text=str(text), nlp_artifacts=nlp_artifacts, language=language, **kwargs
             )
-            progress_bar.update(1)
+            if progress_bar:
+                progress_bar.update(1)
             list_results.append(results)
 
         return list_results
@@ -73,10 +75,10 @@ class BatchAnalyzer:
         :param language: Input language
         :param keys_to_skip: Keys to ignore during analysis
         :param kwargs: Additional keyword arguments
-        for the `AnalyzerEngine.analyze` method.
+        for the `CustomAnalyzerEngine.analyze` method.
         Use this to pass arguments to the analyze method,
         such as `ad_hoc_recognizers`, `context`, `return_decision_process`.
-        See `AnalyzerEngine.analyze` for the full list.
+        See `CustomAnalyzerEngine.analyze` for the full list.
         """
 
         context = []

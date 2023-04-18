@@ -4,9 +4,9 @@ import sys
 import warnings
 import pandas as pd
 from tqdm import tqdm
-from fix_entities_model import fix_entities
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from utils import fix_entities
 from transformers_rec import Analyzer, Anonymizer
 
 
@@ -120,13 +120,13 @@ def model_results(
     print("\nDone!")
 
 
-# because we use n-calls, the warning is annoying as it repeats itself all the time
-analyze_batch = Analyzer("bert-base-cased", type="batch")
-warnings.filterwarnings(
-    "ignore", message="You seem to be using the pipelines sequentially on GPU."
-)
-model_results(
-    analyze_batch,
-    input_path="testing-data/cleaned_sentences_from_db3.csv",
-    output_path="testing-data/output_from_db3.csv",
-)
+# # because we use n-calls, the warning is annoying as it repeats itself all the time
+# analyze_batch = Analyzer("bert-base-cased", type="batch")
+# warnings.filterwarnings(
+#     "ignore", message="You seem to be using the pipelines sequentially on GPU."
+# )
+# model_results(
+#     analyze_batch,
+#     input_path="testing-data/product_reviews9.csv",
+#     output_path="testing-data/output_from_db3.csv",
+# )

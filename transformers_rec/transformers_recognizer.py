@@ -38,19 +38,6 @@ class TransformersRecognizer(EntityRecognizer):
     :type pipeline: Optional[TokenClassificationPipeline], optional
     :param model_path: string referencing a HuggingFace uploaded model to be used for Inference, defaults to None
     :type model_path: Optional[str], optional
-    :example
-    >from presidio_analyzer import AnalyzerEngine, RecognizerRegistry
-    >model_path = "obi/deid_roberta_i2b2"
-    >transformers_recognizer = TransformersRecognizer(model_path=model_path,
-    >supported_entities = model_configuration.get("PRESIDIO_SUPPORTED_ENTITIES"))
-    >transformers_recognizer.load_transformer(**model_configuration)
-    >registry = RecognizerRegistry()
-    >registry.add_recognizer(transformers_recognizer)
-    >analyzer = AnalyzerEngine(registry=registry)
-    >sample = "My name is Christopher and I live in Irbid."
-    >results = analyzer.analyze(sample, language="en",return_decision_process=True)
-    >for result in results:
-    >    print(result,'----', sample[result.start:result.end])
     """
 
     def load(self) -> None:

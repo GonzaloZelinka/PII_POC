@@ -34,10 +34,10 @@ class Anonymizer:
                 analyze_results,
                 operators={"DEFAULT": OperatorConfig(operator, operator_config)},
             )
-            res = sorted(res.items, key=lambda x: x.start)
+            return res
         elif isinstance(self._engine, BatchAnonymizer):
             res = self._engine.anonymize_dict(
                 analyze_results,
                 operators={"DEFAULT": OperatorConfig(operator, operator_config)},
             )
-        return res
+            return res
